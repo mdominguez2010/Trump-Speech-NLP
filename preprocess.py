@@ -14,39 +14,36 @@ from sklearn.model_selection import train_test_split
 
 # Clean text so it's ready for preprocessing
 
-def clean(corpus):
+def clean(speech):
     """
-    Takes a corpus of speeches as an argument and cleans it so it's ready to be pre-processed
+    Takes a speech as an argument and cleans it so it's ready to be pre-processed
     """
-
-    clean_corpus = [] # Initiate clean_corpus
+    # Initiate clean_corpus
     
-    for speech in corpus:
+    # Removes meaningless intro    
+    speech = speech[5:] 
+
+    for i in range(len(speech)):
+        # Removes 'meaningless text hear (min:sec)\n' at the beginning of each paragraph
+        speech[i] = speech[i][speech[i].find('\n') + 1:] 
+        # Replaces brackets with paranthesis
+        speech[i] = speech[i].replace('[', '(') 
+        speech[i] = speech[i].replace(']', ')')
+        # Removes meaningless text in parantheses
+        speech[i] = re.sub(r'\([^)]*\)', '', speech[i]) 
         
-        speech = speech[5:] # Removes meaningless intro
-
-        for i in range(len(speech)):
-            speech[i] = speech[i][speech[i].find('\n') + 1:] # Removes 'meaningless text hear (min:sec)\n' at the beginning of each paragraph
-            speech[i] = speech[i].replace('[', '(') # Replaces brackets with paranthesis
-            speech[i] = speech[i].replace(']', ')')
-            speech[i] = re.sub(r"\([^)]*\)", '', speech[i]) # Removes meaningless text in parantheses
-
-        speech = ','.join(speech) # Join all of the paragraphs into on huge string
+    # Join all of the paragraphs into on huge string
+    speech = ','.join(speech) 
         
-        clean_corpus.append(speech)
-        
-    return clean_corpus
+    return speech
 
-# Preprocess corpus
+# Tokenize corpus and preprocess text
 
-# Create tokenized corpus and preprocess text
-
-def preprocess(corpus):
+def preprocess(clean_speech):
     """
-    Takes in a corpus of speech strings, tokenizes, lemmatizes and removes stop words and punctuation for each speech
+    Takes in a speech, tokenizes and breaks it out into sentences, lemmatizes and removes stop words and punctuation for each speech
     """
-    # Instantiate spacy
-    nlp = spacy.load('en_core_web_sm')
+    
     # Create our list of punctuation marks
     punctuations = '!"#$%&\'()’*+,-./:”;<=>?@[\\]^_`{|}~'
 
@@ -56,29 +53,29 @@ def preprocess(corpus):
     # Establish weird words in our corpus to be filtered out
     weird_words = ['abc', 'c', 'o', 'n']
     
-    # Establish new_corpus
-    new_corpus = []
+    # Etablish new sentence list
+    sentence_list = []
     
-    # Loop through each speech in the corpus and preprocess
-    for speech in corpus:
-        
-        # Tokenize speech
-        speech_tokens = nlp(speech)
+    # Tokenizer
+    tokenizer = spacy.load('en_core_web_sm')
+    speech_tokens = tokenizer(clean_speech)
+
+    for sentence in speech_tokens.sents:
         
         # Lemmatizing each token and converting each token into lowercase
-        speech_tokens = [word.lemma_.lower().strip() if word.lemma_ != "-PRON-" else word.lower_ for word in speech_tokens]
-
+        sentence = [word.lemma_.lower().strip() if word.lemma_ != "-PRON-" else word.lower_ for word in sentence]
+        
         # Remove stop words, weird words and punctuations
-        speech_tokens = [word for word in speech_tokens if word not in stop_words and word not in punctuations \
-                         and word not in weird_words]
+        sentence = [word for word in sentence if word not in stop_words and word not in punctuations \
+                    and word not in weird_words]
 
         # Remove numbers
-        speech_tokens = [word for word in speech_tokens if word.isalpha()]
-                
-        # Join it all into one string
-        speech_tokens = ','.join(speech_tokens)
+        sentence = [word for word in sentence if word.isalpha()]
         
-        # Append to new_corpus
-        new_corpus.append(speech_tokens)
+        # Join all words in sentence
+        sentence = ','.join(sentence)
+        
+        # Append to new list
+        sentence_list.append(sentence)
     
-    return new_corpus
+    return sentence_list
