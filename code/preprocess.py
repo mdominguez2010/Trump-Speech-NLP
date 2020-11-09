@@ -40,9 +40,17 @@ def clean(corpus):
 
         clean_corpus.append(speech)
     
-    # Combined all of the speeches into one huge document
-    clean_corpus = clean_corpus[0] + clean_corpus[1] + clean_corpus[2] + clean_corpus[3] + clean_corpus[4] + \
-                   clean_corpus[5] + clean_corpus[6] + clean_corpus[7]
+    # Combined all of the speeches into one document
+    
+    if len(clean_corpus) == 1:
+        clean_corpus = clean_corpus[0]
+    if len(clean_corpus) == 2:
+        clean_corpus = clean_corpus[0] + clean_corpus[1]
+    if len(clean_corpus) == 3:
+        clean_corpus = clean_corpus[0] + clean_corpus[1] + clean_corpus[2]
+    if len(clean_corpus) == 8:
+        clean_corpus = clean_corpus[0] + clean_corpus[1] + clean_corpus[2] + clean_corpus[3] + clean_corpus[4] + \
+                       clean_corpus[5] + clean_corpus[6] + clean_corpus[7]
         
     return clean_corpus
 
@@ -60,7 +68,7 @@ def preprocess(clean_corpus):
     stop_words = spacy.lang.en.stop_words.STOP_WORDS
     
     # Establish weird words in our corpus to be filtered out
-    weird_words = ['abc', 'c', 'o', 'n']
+    weird_words = ['abc', 'c', 'o', 'n','']
     
     # Etablish new sentence list
     sentence_list = []
@@ -86,5 +94,8 @@ def preprocess(clean_corpus):
         
         # Append to new list
         sentence_list.append(sentence)
+
+    # Remove empty sentences
+    sentence_list = [sentence for sentence in sentence_list if sentence != '']
     
     return sentence_list
