@@ -68,7 +68,8 @@ def preprocess(clean_corpus):
     stop_words = spacy.lang.en.stop_words.STOP_WORDS
     
     # Establish weird words in our corpus to be filtered out
-    weird_words = ['abc', 'c', 'o', 'n','']
+    weird_words = ['abc', 'c', 'o', 'n','', 'know', 'like', 'lot', 'want', 'rand', 'look', 'like', 'thing', 'day', 'come', 'leave',
+                   'today', 'way', 'let', 'think', 'probably', 'long', 'try', 'hear']
     
     # Etablish new sentence list
     sentence_list = []
