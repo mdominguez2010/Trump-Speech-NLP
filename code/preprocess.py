@@ -69,7 +69,7 @@ def preprocess(clean_corpus):
     
     # Establish weird words in our corpus to be filtered out
     weird_words = ['abc', 'c', 'o', 'n','', 'know', 'like', 'lot', 'want', 'rand', 'look', 'like', 'thing', 'day', 'come', 'leave',
-                   'today', 'way', 'let', 'think', 'probably', 'long', 'try', 'hear']
+                   'today', 'way', 'let', 'think', 'probably', 'long', 'try', 'hear', 'guy', 'year']
     
     # Etablish new sentence list
     sentence_list = []
