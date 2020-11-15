@@ -11,7 +11,8 @@ Donald Trump October 2020 Speech Transcripts [here](https://www.rev.com/blog/tra
 4. Web-scraping - BeautifulSoup
 
 ## Depdendencies
-1. web_scrape.py
-  - The get_transcript function uses BeautifulSoup to reteive transcript texts and stores it
-2. preprocess.py
-  - The clean and preprocess functions tokenize, removes stop words/punctuations, and lemmatizes corpus
+
+### 1. web_scrape.py
+The get_transcript function uses BeautifulSoup to reteive transcript texts and stores it
+### 2. preprocess.py
+The clean and preprocess functions tokenize, removes stop words/punctuations, and lemmatizes corpus
